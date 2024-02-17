@@ -3,6 +3,7 @@ import 'package:once/src/const.dart';
 import 'package:once/src/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:version/version.dart';
 
 const _keyPrefix = 'ONCE_PACKAGE_';
 
@@ -156,16 +157,16 @@ abstract class OnceRunner {
 
     final onceKey = 'ON_NEW_VERSION_${key ?? 'once_key'}';
     final preferences = await SharedPreferences.getInstance();
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String currentVersion = packageInfo.version;
+    final packageInfo = await PackageInfo.fromPlatform();
+    final currentVersion = packageInfo.version;
 
     if (preferences.containsKey(onceKey)) {
-      String savedVersion = preferences.get(onceKey).toString();
-      savedVersion = savedVersion.replaceAll(RegExp(r'[^\d]+'), '');
+      final savedVersion = preferences.get(onceKey).toString();
+      final beforeVersion = Version.parse(savedVersion);
 
-      String existingVersion = currentVersion.replaceAll(RegExp(r'[^\d]+'), '');
+      final existingVersion = Version.parse(currentVersion);
 
-      if (num.parse(existingVersion) > num.parse(savedVersion)) {
+      if (existingVersion > beforeVersion) {
         preferences.setString(onceKey, currentVersion);
         return callback.call();
       }

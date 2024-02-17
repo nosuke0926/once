@@ -4,13 +4,14 @@ version: 1.6.1
 repository: https://github.com/MostafaSolimanMO/once
 
 environment:
-  sdk: ">=2.16.0 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.2
   package_info_plus: ^5.0.1
+  version: ^3.0.2
 
 dev_dependencies:
   flutter_lints: ^3.0.1
